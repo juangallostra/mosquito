@@ -1,0 +1,59 @@
+[
+  {
+    "nodes" : [
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{30, 35}, {80, 32}}",
+        "class" : "Button",
+        "attributes" : {
+          "border_width" : 1,
+          "action" : "arm_mosquito",
+          "frame" : "{{113, 211}, {80, 32}}",
+          "tint_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
+          "title" : "Arm",
+          "uuid" : "B3FA43A0-77B6-495D-9C9B-7C197BCE636E",
+          "background_color" : "RGBA(1.000000,1.000000,0.800000,1.000000)",
+          "class" : "Button",
+          "corner_radius" : 10,
+          "name" : "arm_button",
+          "font_size" : 15
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{343, 35}, {80, 32}}",
+        "class" : "Button",
+        "attributes" : {
+          "border_width" : 1,
+          "action" : "disarm_mosquito",
+          "frame" : "{{113, 211}, {80, 32}}",
+          "tint_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
+          "title" : "Disarm",
+          "uuid" : "B3FA43A0-77B6-495D-9C9B-7C197BCE636E",
+          "background_color" : "RGBA(1.000000,1.000000,0.800000,1.000000)",
+          "class" : "Button",
+          "corner_radius" : 10,
+          "name" : "disarm_button",
+          "font_size" : 15
+        },
+        "selected" : true
+      }
+    ],
+    "frame" : "{{0, 0}, {657, 562}}",
+    "class" : "View",
+    "attributes" : {
+      "name" : "Fly",
+      "enabled" : true,
+      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
+      "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
+      "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
+      "flex" : ""
+    },
+    "selected" : false
+  }
+]
