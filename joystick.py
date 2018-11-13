@@ -2,7 +2,7 @@ import ui
 
 class joystick(ui.View):
 
-	def __init__(self, stick_size, size, name, is_throttle_stick=False):
+	def __init__(self, stick_size, size, name, is_throttle_stick=False, rc_x_range=[-1,1] , rc_y_range=[-1,1]):
 		self.is_throttle_stick = is_throttle_stick
 		self.name = name
 		self.width = size
@@ -20,7 +20,14 @@ class joystick(ui.View):
 		stick.background_color = 'blue'
 		stick.corner_radius = stick_size/2
 		stick.name = 'stick'
-		
+
+		# For RC mapping. Stick positions are relative to joystick
+		self.mx = (rc_x_range[1] - rc_x_range[0]) / float(self.width)
+		self.nx = rc_x_range[0]
+		# y axis is reversed
+		self.my = (rc_y_range[0] - rc_y_range[1]) / float(self.height)
+		self.ny = rc_y_range[1]
+	
 	def calc_pos(self, touch):
 		x_comp = touch.location[0] - touch.prev_location[0]
 		x = max(min(self['stick'].x + x_comp, self.width - self['stick'].width), 0)
@@ -36,6 +43,9 @@ class joystick(ui.View):
 		self['stick'].x = self.width/2 - self['stick'].width/2
 		if not self.is_throttle_stick:
 			self['stick'].y = self.height/2 - self['stick'].height/2
+
+	def get_rc_values(self):
+		return self['stick'].x * self.mx + self.nx, self['stick'].y * self.my + self.ny
 			
 		
 #stick = joystick(20, 50)
