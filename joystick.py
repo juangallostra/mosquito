@@ -2,14 +2,16 @@ import ui
 
 class joystick(ui.View):
 
-	def __init__(self, stick_size, size, is_throttle_stick=False):
+	def __init__(self, stick_size, size, name, is_throttle_stick=False):
 		self.is_throttle_stick = is_throttle_stick
+		self.name = name
 		self.width = size
 		self.height = size
 		self.background_color = 'grey'
 		self.corner_radius = self.width/2
 		self.border_width = 1
 		stick = ui.View()
+		stick.name = 'stick'
 		self.add_subview(stick)
 		stick.width, stick.height = stick_size, stick_size
 		stick.x, stick.y = self.width/2 - stick.width/2, self.height/2 - stick.height/2
