@@ -45,7 +45,9 @@ class joystick(ui.View):
 			self['stick'].y = self.height/2 - self['stick'].height/2
 
 	def get_rc_values(self):
-		return (self['stick'].x + self['stick'].width / 2.0) * self.mx + self.nx, (self['stick'].y + self['stick'].height / 2.0) * self.my + self.ny
+		rc_x = (self['stick'].x + self['stick'].width / 2.0) * self.mx + self.nx
+		rc_y = (self['stick'].y + self['stick'].height / 2.0) * self.my + self.ny
+		return rc_x, rc_y
 			
 		
 #stick = joystick(20, 50)

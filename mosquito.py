@@ -129,9 +129,8 @@ class Mosquito(ui.View):
 			pass	
 		self._disarm_clicked = False
 		while not self._disarm_clicked:
-			print 'ls: ' + str(sender.superview['left_stick'].get_rc_values())
-			print 'rs: ' + str(sender.superview['right_stick'].get_rc_values())
-			print self._disarm_clicked
+			yaw, throttle = sender.superview['left_stick'].get_rc_values()
+			roll, pitch = sender.superview['right_stick'].get_rc_values()
 		
 	def disarm_mosquito(self, sender):
 		"""
