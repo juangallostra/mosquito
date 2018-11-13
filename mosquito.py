@@ -130,8 +130,13 @@ class Mosquito(ui.View):
 		self._disarm_clicked = False
 		# until disarmed send joystick data to the mosquito
 		while not self._disarm_clicked:
+			if sender.superview['aux_2_switch'].value:
+				aux_2 = 1.0
+			else:
+				aux_2 = 0.0
 			yaw, throttle = sender.superview['left_stick'].get_rc_values()
 			roll, pitch = sender.superview['right_stick'].get_rc_values()
+			data = msppg.serialize_RC_NORMAL(throttle, roll, pitch, yaw, 0.0, aux_2)
 		
 	def disarm_mosquito(self, sender):
 		"""
@@ -156,7 +161,6 @@ class Mosquito(ui.View):
 		m_4 = parent_view['slider_motor_4'].value
 		data = msppg.serialize_SET_MOTOR_NORMAL(m_1, m_2,m_3,m_4)
 		self._sock.send(data)
-
 
 def main():
 	Mosquito()
