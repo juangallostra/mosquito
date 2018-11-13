@@ -5,7 +5,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{30, 35}, {80, 32}}",
+        "frame" : "{{60, 35}, {80, 32}}",
         "class" : "Button",
         "attributes" : {
           "border_width" : 1,
@@ -20,13 +20,13 @@
           "name" : "arm_button",
           "font_size" : 15
         },
-        "selected" : false
+        "selected" : true
       },
       {
         "nodes" : [
 
         ],
-        "frame" : "{{343, 35}, {80, 32}}",
+        "frame" : "{{420, 35}, {80, 32}}",
         "class" : "Button",
         "attributes" : {
           "border_width" : 1,
@@ -41,7 +41,7 @@
           "name" : "disarm_button",
           "font_size" : 15
         },
-        "selected" : true
+        "selected" : false
       }
     ],
     "frame" : "{{0, 0}, {657, 562}}",
@@ -49,9 +49,9 @@
     "attributes" : {
       "name" : "Fly",
       "enabled" : true,
-      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
       "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
       "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
+      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
       "flex" : ""
     },
     "selected" : false
