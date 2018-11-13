@@ -39,18 +39,9 @@ class Mosquito(ui.View):
 	def __init__(self, address=ADDRESS, port=PORT, timeout=TIMEOUT):
 		
 		# view handling
-		#self.view_names = ['dashboard.pyui', 'fly_mosquito.pyui']
-		#self.view_index = 0
-		#self.view_array = []
-
 		self.view_dict = {'dashboard.pyui':None, 'fly_mosquito.pyui':None}
 		
 		# load and hide views
-		#for i in range(len(self.view_names)):
-		#	self.view_array.append(mosquito_load_view(self.view_names[self.view_index]))
-		#	self.add_subview(self.view_array[self.view_index])
-		#	self.view_array[self.view_index].hidden = True	
-		#	self.view_index += 1
 		for key in self.view_dict.keys():
 			# Load view, add it to the main view and hide it
 			self.view_dict[key] = mosquito_load_view(key)
@@ -89,12 +80,9 @@ class Mosquito(ui.View):
 		self._disarm_clicked = False
 		
 	def switch_view(self, view):
-		#for i in range(len(self.view_array)):
-		#	self.view_array[i].hidden = True
-		#self.view_array[self.view_index].hidden = False
-		#self.name = self.view_names[self.view_index]
-
-		# Make the requested view visible and hide all the rest
+		"""
+		Make the requested view visible and hide all the rest
+		"""
 		for key in self.view_dict.keys():
 			self.view_dict[key].hidden = True
 			if key == view:
@@ -103,7 +91,9 @@ class Mosquito(ui.View):
 
 	# Action methods
 	def _switch_to_fly(self, sender):
-		# self.view_index = (self.view_index + 1) % len(self.view_array)
+		"""
+		Show fly view
+		"""
 		self.switch_view('fly_mosquito.pyui')
 
 	def arm_mosquito(self, sender):
@@ -119,7 +109,8 @@ class Mosquito(ui.View):
 	@ui.in_background
 	def fly_arm_mosquito(self, sender):
 		"""
-		Arm the Mosquito via Wifi
+		Arm the Mosquito via Wifi and loop sending RC commands
+		until disarmed
 		"""
 		data = msppg.serialize_SET_ARMED(1)
 		try:
@@ -155,13 +146,6 @@ class Mosquito(ui.View):
 		m_4 = parent_view['slider_motor_4'].value
 		data = msppg.serialize_SET_MOTOR_NORMAL(m_1, m_2,m_3,m_4)
 		self._sock.send(data)
-
-	def read_position(self, sender):
-		"""
-		read stick position
-		"""
-		print 'in'
-		print sender['stick'].x, sender.y
 
 
 def main():
