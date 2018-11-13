@@ -17,7 +17,7 @@
           "background_color" : "RGBA(1.000000,1.000000,0.800000,1.000000)",
           "class" : "Button",
           "corner_radius" : 10,
-          "name" : "arm_button",
+          "name" : "btn_arm",
           "font_size" : 15
         },
         "selected" : false
@@ -38,7 +38,7 @@
           "background_color" : "RGBA(1.000000,1.000000,0.800000,1.000000)",
           "class" : "Button",
           "corner_radius" : 10,
-          "name" : "disarm_button",
+          "name" : "btn_disarm",
           "font_size" : 15
         },
         "selected" : true
@@ -47,11 +47,11 @@
     "frame" : "{{0, 0}, {657, 562}}",
     "class" : "View",
     "attributes" : {
-      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
+      "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
       "enabled" : true,
+      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
       "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
       "name" : "Fly",
-      "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
       "flex" : ""
     },
     "selected" : false
