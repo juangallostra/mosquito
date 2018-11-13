@@ -60,7 +60,7 @@ class Mosquito(ui.View):
 		self.view_dict['dashboard.pyui']['fly_button'].action = self._switch_to_fly
 		
 		# Show the dashboard view
-		self.view_array['dashboard.pyui'].hidden = False
+		self.view_dict['dashboard.pyui'].hidden = False
 		self.present('fullscreen', orientations=['portrait', 'landscape'])
 		
 		# store connection data and try to connect to the mosquito
