@@ -69,6 +69,8 @@ class Mosquito(ui.View):
 		# fly mosquito view actions
 		self.view_dict['fly_mosquito.pyui']['btn_arm'].action = self.arm_mosquito
 		self.view_dict['fly_mosquito.pyui']['btn_disarm'].action = self.disarm_mosquito
+		# test reading joystick values
+		self.view_dict['fly_mosquito.pyui']['left_stick']['stick'].action = self.read_position
 		
 		# Show the dashboard view
 		self.view_dict['dashboard.pyui'].hidden = False
@@ -128,6 +130,12 @@ class Mosquito(ui.View):
 		m_4 = parent_view['slider_motor_4'].value
 		data = msppg.serialize_SET_MOTOR_NORMAL(m_1, m_2,m_3,m_4)
 		self._sock.send(data)
+
+	def read_position(self, sender):
+		"""
+		read stick position
+		"""
+		print sender.x, sender.y
 
 
 def main():
