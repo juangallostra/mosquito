@@ -57,7 +57,7 @@ class Mosquito(ui.View):
 			self.view_dict[key].hidden = True
 			
 		# bind actions
-		self.view_dict['dashboard.pyui']['fly_button'].action = self.switch_to_fly
+		self.view_dict['dashboard.pyui']['fly_button'].action = self._switch_to_fly
 		
 		# Show the dashboard view
 		self.view_array['dashboard.pyui'].hidden = False
@@ -74,15 +74,22 @@ class Mosquito(ui.View):
 		except:
 			console.alert('Could not connect to the Mosquito')	
 		
-	def switch_views(self):
-			for i in range(len(self.view_array)):
-				self.view_array[i].hidden = True
-			self.view_array[self.view_index].hidden = False
-			self.name = self.view_names[self.view_index]
+	def switch_view(self, view):
+		#for i in range(len(self.view_array)):
+		#	self.view_array[i].hidden = True
+		#self.view_array[self.view_index].hidden = False
+		#self.name = self.view_names[self.view_index]
+
+		# Make the requested view visible and hide all the rest
+		for key in self.view_dict.keys():
+			if key == view:
+				self.view_dict[view].hidden = False
+			self.view_dict[view].hidden = True
+
 			
-	def switch_to_fly(self, sender):
-			self.view_index = (self.view_index + 1) % len(self.view_array)
-			self.switch_views()
+	def _switch_to_fly(self, sender):
+		# self.view_index = (self.view_index + 1) % len(self.view_array)
+		self.switch_view('fly_mosquito.pyui')
 
 
 def main():
