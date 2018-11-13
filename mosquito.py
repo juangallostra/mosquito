@@ -38,25 +38,32 @@ class Mosquito(ui.View):
 	def __init__(self, address=ADDRESS, port=PORT, timeout=TIMEOUT):
 		
 		# view handling
-		self.view_names = ['dashboard.pyui', 'fly_mosquito.pyui']
-		self.view_index = 0
-		self.view_array = []
+		#self.view_names = ['dashboard.pyui', 'fly_mosquito.pyui']
+		#self.view_index = 0
+		#self.view_array = []
+
+		self.view_dict = {'dashboard.pyui':None, 'fly_mosquito.pyui':None}
 		
 		# load and hide views
-		for i in range(len(self.view_names)):
-			self.view_array.append(mosquito_load_view(self.view_names[self.view_index]))
-			self.add_subview(self.view_array[self.view_index])
-			self.view_array[self.view_index].hidden = True
-			
-			self.view_index += 1
+		#for i in range(len(self.view_names)):
+		#	self.view_array.append(mosquito_load_view(self.view_names[self.view_index]))
+		#	self.add_subview(self.view_array[self.view_index])
+		#	self.view_array[self.view_index].hidden = True	
+		#	self.view_index += 1
+		for key in self.view_dict.keys():
+			# Load view, add it to the main view and hide it
+			self.view_dict[key] = mosquito_load_view(key)
+			self.add_subview(self.view_dict[key])
+			self.view_dict[key].hidden = True
 			
 		# bind actions
-		self.view_array[0]['fly_button'].action = self.switch_to_fly
+		self.view_dict['dashboard.pyui']['fly_button'].action = self.switch_to_fly
 		
-		self.view_array[0].hidden = False
+		# Show the dashboard view
+		self.view_array['dashboard.pyui'].hidden = False
 		self.present('fullscreen', orientations=['portrait', 'landscape'])
 		
-		# Connection data
+		# store connection data and try to connect to the mosquito
 		self._address = address
 		self._port = port
 		self._timeout = timeout
