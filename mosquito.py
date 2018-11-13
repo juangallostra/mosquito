@@ -136,6 +136,7 @@ class Mosquito(ui.View):
 			yaw, throttle = sender.superview['left_stick'].get_rc_values()
 			roll, pitch = sender.superview['right_stick'].get_rc_values()
 			data = msppg.serialize_SET_RC_NORMAL(throttle, roll, pitch, yaw, 0.0, aux_2)
+			self._sock.send(data)
 		
 	def disarm_mosquito(self, sender):
 		"""
