@@ -123,6 +123,7 @@ class Mosquito(ui.View):
 		Arm the Mosquito via Wifi and loop sending RC commands
 		until disarmed
 		"""
+		first_iter = True
 		data = msppg.serialize_SET_ARMED(1)
 		try:
 			self._sock.send(data)
@@ -131,12 +132,16 @@ class Mosquito(ui.View):
 		self._disarm_clicked = False
 		# until disarmed send joystick data to the mosquito
 		while not self._disarm_clicked:
+			aux_2 = 1.0
+			if first_iter:
+				aux_2 = 0.0
+				first_iter = False
 			aux_1 = 0.0
 			if sender.superview['aux_1_switch'].value:
 				aux_1 = 1.0
 			yaw, throttle = sender.superview['left_stick'].get_rc_values()
 			roll, pitch = sender.superview['right_stick'].get_rc_values()
-			data = msppg.serialize_SET_RC_NORMAL(throttle, roll, pitch, yaw, aux_1, 1.0)
+			data = msppg.serialize_SET_RC_NORMAL(throttle, roll, pitch, yaw, aux_1, aux_2)
 			self._sock.send(data)
 		
 	def disarm_mosquito(self, sender):
