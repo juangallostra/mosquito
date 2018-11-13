@@ -50,13 +50,13 @@
         "frame" : "{{0, 135}, {301, 32}}",
         "class" : "Label",
         "attributes" : {
-          "font_size" : 18,
+          "name" : "motor_control",
           "frame" : "{{76, 182}, {150, 32}}",
           "uuid" : "4B45C741-96A4-4920-9753-DABAB84E2EB8",
           "class" : "Label",
           "alignment" : "center",
           "text" : "Motor Control",
-          "name" : "motor_control",
+          "font_size" : 18,
           "font_name" : "AvenirNext-UltraLight"
         },
         "selected" : false
@@ -74,8 +74,8 @@
           "class" : "Label",
           "alignment" : "center",
           "text" : "Arming",
-          "font_size" : 18,
-          "name" : "arming"
+          "name" : "arming",
+          "font_size" : 18
         },
         "selected" : false
       },
@@ -158,13 +158,13 @@
         "frame" : "{{6, 183}, {49, 34}}",
         "class" : "Label",
         "attributes" : {
-          "name" : "m1",
+          "font_size" : 18,
           "frame" : "{{76, 182}, {150, 32}}",
           "uuid" : "08F53AE9-EDAA-4686-BBD1-CD5CDEB4621C",
           "class" : "Label",
           "alignment" : "center",
           "text" : "M1",
-          "font_size" : 18,
+          "name" : "m1",
           "font_name" : "<System>"
         },
         "selected" : false
@@ -182,8 +182,8 @@
           "class" : "Label",
           "alignment" : "center",
           "text" : "M2",
-          "name" : "m2",
-          "font_size" : 18
+          "font_size" : 18,
+          "name" : "m2"
         },
         "selected" : false
       },
@@ -194,13 +194,13 @@
         "frame" : "{{6, 294}, {49, 34}}",
         "class" : "Label",
         "attributes" : {
-          "font_size" : 18,
+          "name" : "m3",
           "frame" : "{{76, 182}, {150, 32}}",
           "uuid" : "08F53AE9-EDAA-4686-BBD1-CD5CDEB4621C",
           "class" : "Label",
           "alignment" : "center",
           "text" : "M3",
-          "name" : "m3",
+          "font_size" : 18,
           "font_name" : "<System>"
         },
         "selected" : false
@@ -218,8 +218,8 @@
           "class" : "Label",
           "alignment" : "center",
           "text" : "M4",
-          "font_size" : 18,
-          "name" : "m4"
+          "name" : "m4",
+          "font_size" : 18
         },
         "selected" : false
       },
@@ -231,7 +231,7 @@
         "class" : "Button",
         "attributes" : {
           "border_width" : 1,
-          "action" : "fly_clicked",
+          "action" : "",
           "frame" : "{{123, 231}, {80, 32}}",
           "tint_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
           "title" : "Fly",
@@ -242,7 +242,7 @@
           "name" : "fly_button",
           "font_size" : 30
         },
-        "selected" : false
+        "selected" : true
       }
     ],
     "frame" : "{{0, 0}, {326, 494}}",

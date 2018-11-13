@@ -82,11 +82,10 @@ class Mosquito(ui.View):
 
 		# Make the requested view visible and hide all the rest
 		for key in self.view_dict.keys():
+			self.view_dict[key].hidden = True
 			if key == view:
-				self.view_dict[view].hidden = False
-			self.view_dict[view].hidden = True
-
-			
+				self.view_dict[key].hidden = False
+	
 	def _switch_to_fly(self, sender):
 		# self.view_index = (self.view_index + 1) % len(self.view_array)
 		self.switch_view('fly_mosquito.pyui')
