@@ -60,6 +60,7 @@ class Mosquito(ui.View):
 		# fly mosquito view actions
 		self.view_dict['fly_mosquito.pyui']['btn_arm'].action = self.fly_arm_mosquito
 		self.view_dict['fly_mosquito.pyui']['btn_disarm'].action = self.disarm_mosquito
+		self.view_dict['fly_mosquito.pyui']['btn_dashboard'].action = self._switch_to_dashboard
 		
 		# Show the dashboard view
 		self.view_dict['dashboard.pyui'].hidden = False
@@ -96,6 +97,15 @@ class Mosquito(ui.View):
 		"""
 		self.switch_view('fly_mosquito.pyui')
 
+	def _switch_to_dashboard(self, sender):
+		"""
+		Show dashboard view
+		"""
+		# As a safety measure, disarm Mosquito when going back
+		self._disarm_clicked = True
+		self.disarm_mosquito()
+		self.switch_view('dashboard.pyui')
+
 	def arm_mosquito(self, sender):
 		"""
 		Arm the Mosquito via Wifi
@@ -116,7 +126,7 @@ class Mosquito(ui.View):
 		try:
 			self._sock.send(data)
 		except:
-			pass
+			pass	
 		self._disarm_clicked = False
 		while not self._disarm_clicked:
 			print 'x: ' + str(sender.superview['left_stick']['stick'].x)
