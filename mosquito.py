@@ -9,21 +9,22 @@ import joystick as js
 import msppg
 
 def mosquito_load_view(view):
-	v = ui.load_view(view)
+	"""
+	Load a pythonista ui view and its specific 
+	components from a ui filename
+	"""
+	ui_view = ui.load_view(view)
 	if view == 'fly_mosquito.pyui':
-		stick_1 = js.joystick(50, 150, is_throttle_stick=True)
-		stick_2 = js.joystick(50, 150)
-		stick_1.x = 25
-		stick_1.y = 115
-		stick_2.x = 385
-		stick_2.y = 115
-	#stick.present('sheet')
-		stick_1.touch_ended(None)  # center the 
-	#stick
-		stick_2.touch_ended(None)
-		v.add_subview(stick_1)
-		v.add_subview(stick_2)
-	return v
+		stick_throttle_yaw = js.joystick(50, 150, is_throttle_stick=True)
+		stick_roll_pitch = js.joystick(50, 150)
+		stick_throttle_yaw.x, stick_throttle_yaw.y = 25, 115
+		stick_roll_pitch.x, stick_roll_pitch.y = 385, 115
+		#stick.present('sheet')
+		stick_throttle_yaw.touch_ended(None)  # center the stick
+		stick_roll_pitch.touch_ended(None)
+		ui_view.add_subview(stick_throttle_yaw)
+		ui_view.add_subview(stick_roll_pitch)
+	return ui_view
 
 
 # Main class for the app that switches beween views
