@@ -111,11 +111,17 @@ class Mosquito(ui.View):
 		"""
 		Arm the Mosquito via Wifi
 		"""
-		data = msppg.serialize_SET_ARMED(1)
+		#data = msppg.serialize_SET_ARMED(1)
+		#try:
+		#	self._sock.send(data)
+		#except:
+		#	pass
+		data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, 1.0)
 		try:
 			self._sock.send(data)
 		except:
-			pass
+			console.alert("Connection lost!")
+
 
 	@ui.in_background
 	def fly_arm_mosquito(self, sender):
@@ -123,13 +129,13 @@ class Mosquito(ui.View):
 		Arm the Mosquito via Wifi and loop sending RC commands
 		until disarmed
 		"""
+		#data = msppg.serialize_SET_ARMED(1)
+		#try:
+		#	self._sock.send(data)
+		#except:
+		#	pass	
+		#self._disarm_clicked = False
 		first_iter = True
-		data = msppg.serialize_SET_ARMED(1)
-		try:
-			self._sock.send(data)
-		except:
-			pass	
-		self._disarm_clicked = False
 		# until disarmed send joystick data to the mosquito
 		while not self._disarm_clicked:
 			aux_2 = 1.0
@@ -142,19 +148,27 @@ class Mosquito(ui.View):
 			yaw, throttle = sender.superview['left_stick'].get_rc_values()
 			roll, pitch = sender.superview['right_stick'].get_rc_values()
 			data = msppg.serialize_SET_RC_NORMAL(throttle, roll, pitch, yaw, aux_1, aux_2)
-			self._sock.send(data)
+			try:
+				self._sock.send(data)
+			except:
+				console.alert("Connection lost!")
 		
 	def disarm_mosquito(self, sender):
 		"""
 		Diasrm Mosquito via Wifi
 		"""
-		data = msppg.serialize_SET_ARMED(0)
+		#data = msppg.serialize_SET_ARMED(0)
+		#try:
+		#	self._sock.send(data)
+		#except:
+		#	pass
+		if sender.superview.name == 'Fly':
+			self._disarm_clicked = True
+		data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 		try:
 			self._sock.send(data)
 		except:
-			pass
-		if sender.superview.name == 'Fly':
-			self._disarm_clicked = True
+			console.alert("Connection lost!")
 			
 	def send_motor_values(self, sender):
 		"""
