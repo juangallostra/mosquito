@@ -134,13 +134,13 @@ class Mosquito(ui.View):
 		#	self._sock.send(data)
 		#except:
 		#	pass	
-		#self._disarm_clicked = False
+		self._disarm_clicked = False
 		first_iter = True
 		# until disarmed send joystick data to the mosquito
 		while not self._disarm_clicked:
 			aux_2 = 1.0
 			if first_iter:
-				aux_2 = 0.0
+				aux_2 = -1.0
 				first_iter = False
 			aux_1 = 0.0
 			if sender.superview['aux_1_switch'].value:
@@ -152,6 +152,11 @@ class Mosquito(ui.View):
 				self._sock.send(data)
 			except:
 				console.alert("Connection lost!")
+		data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0)
+		try:
+			self._sock.send(data)
+		except:
+			console.alert("Connection lost!")
 		
 	def disarm_mosquito(self, sender):
 		"""
@@ -164,11 +169,12 @@ class Mosquito(ui.View):
 		#	pass
 		if sender.superview.name == 'Fly':
 			self._disarm_clicked = True
-		data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, 0.0)
-		try:
-			self._sock.send(data)
-		except:
-			console.alert("Connection lost!")
+		else:
+			data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0)
+			try:
+				self._sock.send(data)
+			except:
+				console.alert("Connection lost!")
 			
 	def send_motor_values(self, sender):
 		"""
