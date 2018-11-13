@@ -67,10 +67,8 @@ class Mosquito(ui.View):
 		self.view_dict['dashboard.pyui']['slider_motor_3'].action = self.send_motor_values
 		self.view_dict['dashboard.pyui']['slider_motor_4'].action = self.send_motor_values
 		# fly mosquito view actions
-		self.view_dict['fly_mosquito.pyui']['btn_arm'].action = self.arm_mosquito
+		self.view_dict['fly_mosquito.pyui']['btn_arm'].action = self.fly_arm_mosquito
 		self.view_dict['fly_mosquito.pyui']['btn_disarm'].action = self.disarm_mosquito
-		# test reading joystick values
-		self.view_dict['fly_mosquito.pyui']['left_stick']['stick'].action = self.read_position
 		
 		# Show the dashboard view
 		self.view_dict['dashboard.pyui'].hidden = False
@@ -86,6 +84,9 @@ class Mosquito(ui.View):
 			self._sock.connect((self._address, self._port))
 		except:
 			console.alert('Could not connect to the Mosquito')	
+			
+		# state attributes
+		self._disarm_clicked = False
 		
 	def switch_view(self, view):
 		#for i in range(len(self.view_array)):
@@ -110,15 +111,39 @@ class Mosquito(ui.View):
 		Arm the Mosquito via Wifi
 		"""
 		data = msppg.serialize_SET_ARMED(1)
-		self._sock.send(data)
+		try:
+			self._sock.send(data)
+		except:
+			pass
+
+	@ui.in_background
+	def fly_arm_mosquito(self, sender):
+		"""
+		Arm the Mosquito via Wifi
+		"""
+		data = msppg.serialize_SET_ARMED(1)
+		try:
+			self._sock.send(data)
+		except:
+			pass
+		self._disarm_clicked = False
+		while not self._disarm_clicked:
+			print 'x: ' + str(sender.superview['left_stick']['stick'].x)
+			print 'y: ' + str(sender.superview['left_stick']['stick'].y)
+			print self._disarm_clicked
 		
 	def disarm_mosquito(self, sender):
 		"""
 		Diasrm Mosquito via Wifi
 		"""
 		data = msppg.serialize_SET_ARMED(0)
-		self._sock.send(data)
-		
+		try:
+			self._sock.send(data)
+		except:
+			pass
+		if sender.superview.name == 'Fly':
+			self._disarm_clicked = True
+			
 	def send_motor_values(self, sender):
 		"""
 		Set motor values via Wifi
@@ -135,7 +160,8 @@ class Mosquito(ui.View):
 		"""
 		read stick position
 		"""
-		print sender.x, sender.y
+		print 'in'
+		print sender['stick'].x, sender.y
 
 
 def main():
