@@ -8,6 +8,11 @@ import dashboard
 import joystick as js
 import msppg
 
+# Connection constants
+ADDRESS = '192.168.4.1'
+PORT = 80
+TIMEOUT = 4
+
 def mosquito_load_view(view):
 	"""
 	Load a pythonista ui view and its specific 
@@ -30,7 +35,7 @@ def mosquito_load_view(view):
 # Main class for the app that switches beween views
 class Mosquito(ui.View):
 
-	def __init__(self, address='192.168.4.1', port=80, timeout=4):
+	def __init__(self, address=ADDRESS, port=PORT, timeout=TIMEOUT):
 		
 		# view handling
 		self.view_names = ['dashboard.pyui', 'fly_mosquito.pyui']
