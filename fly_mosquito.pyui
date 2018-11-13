@@ -5,7 +5,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{60, 35}, {80, 32}}",
+        "frame" : "{{40, 15}, {119, 32}}",
         "class" : "Button",
         "attributes" : {
           "border_width" : 1,
@@ -26,7 +26,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{420, 35}, {80, 32}}",
+        "frame" : "{{400, 15}, {119, 32}}",
         "class" : "Button",
         "attributes" : {
           "border_width" : 1,
@@ -47,7 +47,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{194, 35}, {175, 32}}",
+        "frame" : "{{194, 15}, {175, 32}}",
         "class" : "Button",
         "attributes" : {
           "border_width" : 1,
@@ -62,6 +62,39 @@
           "font_size" : 15
         },
         "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{40, 60}, {51, 31}}",
+        "class" : "Switch",
+        "attributes" : {
+          "frame" : "{{303, 266}, {51, 31}}",
+          "value" : true,
+          "class" : "Switch",
+          "name" : "switch1",
+          "uuid" : "F58072F8-9EC6-4F18-92FE-6CFBED81AEAF"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{99, 60}, {60, 32}}",
+        "class" : "Label",
+        "attributes" : {
+          "name" : "aux_label",
+          "frame" : "{{254, 265}, {150, 32}}",
+          "uuid" : "77F595E6-3CB0-45C4-8132-807ECC74505F",
+          "class" : "Label",
+          "alignment" : "left",
+          "text" : "Aux 2",
+          "font_size" : 18,
+          "font_name" : "<System>"
+        },
+        "selected" : false
       }
     ],
     "frame" : "{{0, 0}, {657, 562}}",
@@ -69,9 +102,9 @@
     "attributes" : {
       "name" : "Fly",
       "enabled" : true,
+      "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
       "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
       "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
-      "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
       "flex" : ""
     },
     "selected" : false

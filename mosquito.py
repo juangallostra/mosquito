@@ -128,6 +128,7 @@ class Mosquito(ui.View):
 		except:
 			pass	
 		self._disarm_clicked = False
+		# until disarmed send joystick data to the mosquito
 		while not self._disarm_clicked:
 			yaw, throttle = sender.superview['left_stick'].get_rc_values()
 			roll, pitch = sender.superview['right_stick'].get_rc_values()
