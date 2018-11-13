@@ -79,6 +79,7 @@ class Mosquito(ui.View):
 			
 		# state attributes
 		self._disarm_clicked = False
+		self.view_dict['fly_mosquito.pyui']['aux_1_switch'].value = False
 		
 	def switch_view(self, view):
 		"""
