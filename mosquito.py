@@ -6,6 +6,7 @@ from socket import socket
 import fly_mosquito
 import dashboard
 import joystick as js
+
 import msppg
 
 # Connection constants
@@ -86,9 +87,37 @@ class Mosquito(ui.View):
 			if key == view:
 				self.view_dict[key].hidden = False
 	
+
+	# Action methods
 	def _switch_to_fly(self, sender):
 		# self.view_index = (self.view_index + 1) % len(self.view_array)
 		self.switch_view('fly_mosquito.pyui')
+
+	def arm_mosquito(self, sender):
+		"""
+		Arm the Mosquito via Wifi
+		"""
+		data = msppg.serialize_SET_ARMED(1)
+		self._sock.send(data)
+		
+	def disarm_mosquito(self, sender):
+		"""
+		Diasrm Mosquito via Wifi
+		"""
+		data = msppg.serialize_SET_ARMED(0)
+		self._sock.send(data)
+		
+	def send_motor_values(self, sender):
+		"""
+		Set motor values via Wifi
+		"""
+		parent_view = sender.superview
+		m_1 = parent_view['slider_motor_1'].value
+		m_2 = parent_view['slider_motor_2'].value
+		m_3 = parent_view['slider_motor_3'].value
+		m_4 = parent_view['slider_motor_4'].value
+		data = msppg.serialize_SET_MOTOR_NORMAL(m_1, m_2,m_3,m_4)
+		self._sock.send(data)
 
 
 def main():
