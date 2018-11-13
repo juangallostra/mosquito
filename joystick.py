@@ -22,11 +22,11 @@ class joystick(ui.View):
 		stick.name = 'stick'
 
 		# For RC mapping. Stick positions are relative to joystick
-		self.mx = (rc_x_range[1] - rc_x_range[0]) / float(self.width)
-		self.nx = rc_x_range[0]
+		self.mx = (rc_x_range[1] - rc_x_range[0]) / float(self.width-self['stick'].width)
+		self.nx = rc_x_range[0] - self.mx * self['stick'].width / 2.0
 		# y axis is reversed
-		self.my = (rc_y_range[0] - rc_y_range[1]) / float(self.height)
-		self.ny = rc_y_range[1]
+		self.my = (rc_y_range[0] - rc_y_range[1]) / float(self.height-self['stick'].height)
+		self.ny = rc_y_range[1] - self.my * self['stick'].height / 2.0
 	
 	def calc_pos(self, touch):
 		x_comp = touch.location[0] - touch.prev_location[0]
@@ -45,7 +45,7 @@ class joystick(ui.View):
 			self['stick'].y = self.height/2 - self['stick'].height/2
 
 	def get_rc_values(self):
-		return self['stick'].x * self.mx + self.nx, self['stick'].y * self.my + self.ny
+		return (self['stick'].x + self['stick'].width / 2.0) * self.mx + self.nx, (self['stick'].y + self['stick'].height / 2.0) * self.my + self.ny
 			
 		
 #stick = joystick(20, 50)

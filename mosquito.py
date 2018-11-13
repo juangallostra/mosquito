@@ -103,7 +103,7 @@ class Mosquito(ui.View):
 		"""
 		# As a safety measure, disarm Mosquito when going back
 		self._disarm_clicked = True
-		self.disarm_mosquito()
+		self.disarm_mosquito(sender)
 		self.switch_view('dashboard.pyui')
 
 	def arm_mosquito(self, sender):

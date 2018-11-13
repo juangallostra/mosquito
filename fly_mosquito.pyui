@@ -41,17 +41,37 @@
           "name" : "btn_disarm",
           "font_size" : 15
         },
-        "selected" : true
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{194, 35}, {175, 32}}",
+        "class" : "Button",
+        "attributes" : {
+          "border_width" : 1,
+          "frame" : "{{289, 265}, {80, 32}}",
+          "tint_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
+          "title" : "Dashboard",
+          "uuid" : "94068A5E-44AF-488C-9A7F-53BC803D48C4",
+          "background_color" : "RGBA(0.795991,0.955189,0.716392,1.000000)",
+          "class" : "Button",
+          "corner_radius" : 10,
+          "name" : "btn_dashboard",
+          "font_size" : 15
+        },
+        "selected" : false
       }
     ],
     "frame" : "{{0, 0}, {657, 562}}",
     "class" : "View",
     "attributes" : {
-      "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
+      "name" : "Fly",
       "enabled" : true,
+      "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
       "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
       "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
-      "name" : "Fly",
       "flex" : ""
     },
     "selected" : false
