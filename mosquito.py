@@ -58,7 +58,13 @@ class Mosquito(ui.View):
 			self.view_dict[key].hidden = True
 			
 		# bind actions
-		self.view_dict['dashboard.pyui']['fly_button'].action = self._switch_to_fly
+		self.view_dict['dashboard.pyui']['btn_fly'].action = self._switch_to_fly
+		self.view_dict['dashboard.pyui']['btn_arm'].action = self.arm_mosquito
+		self.view_dict['dashboard.pyui']['btn_disarm'].action = self.disarm_mosquito
+		self.view_dict['dashboard.pyui']['slider_motor_1'].action = self.send_motor_values
+		self.view_dict['dashboard.pyui']['slider_motor_2'].action = self.send_motor_values
+		self.view_dict['dashboard.pyui']['slider_motor_3'].action = self.send_motor_values
+		self.view_dict['dashboard.pyui']['slider_motor_4'].action = self.send_motor_values
 		
 		# Show the dashboard view
 		self.view_dict['dashboard.pyui'].hidden = False
