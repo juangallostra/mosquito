@@ -5,8 +5,6 @@ import console
 from socket import socket
 import time
 
-import fly_mosquito
-import dashboard
 import joystick as js
 
 import msppg
