@@ -38,7 +38,6 @@ def mosquito_load_view(view):
 class Mosquito(ui.View):
 
 	def __init__(self, address=ADDRESS, port=PORT, timeout=TIMEOUT):
-		
 		# view handling
 		self.view_dict = {'dashboard.pyui':None, 'fly_mosquito.pyui':None}
 		
