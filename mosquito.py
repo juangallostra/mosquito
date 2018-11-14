@@ -67,21 +67,31 @@ class Mosquito(ui.View):
 		self.view_dict['dashboard.pyui'].hidden = False
 		self.present('fullscreen', orientations=['portrait', 'landscape'])
 		
-		# store connection data and try to connect to the mosquito
+		# store connection data and connect
 		self._address = address
 		self._port = port
 		self._timeout = timeout
+		self._sock = None
+		self._connect()
+			
+		# state attributes
+		self._disarm_clicked = False
+		self.view_dict['fly_mosquito.pyui']['aux_1_switch'].value = False
+		
+	def _connect(self):
+		"""
+		Try to connect to the mosquito
+		"""
+		if self._sock:
+			self._sock.close()
+
 		self._sock = socket()
 		self._sock.settimeout(self._timeout)
 		try:
 			self._sock.connect((self._address, self._port))
 		except:
 			console.alert('Could not connect to the Mosquito')	
-			
-		# state attributes
-		self._disarm_clicked = False
-		self.view_dict['fly_mosquito.pyui']['aux_1_switch'].value = False
-		
+
 	def switch_view(self, view):
 		"""
 		Make the requested view visible and hide all the rest
