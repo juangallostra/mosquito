@@ -2,6 +2,7 @@
 import ui
 import console
 from socket import socket
+import time
 
 import fly_mosquito
 import dashboard
@@ -116,12 +117,13 @@ class Mosquito(ui.View):
 		#	self._sock.send(data)
 		#except:
 		#	pass
-		data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, 1.0)
+		data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+		data_2 = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, 1.0)
 		try:
 			self._sock.send(data)
+			self._sock.send(data_2)
 		except:
 			console.alert("Connection lost!")
-
 
 	@ui.in_background
 	def fly_arm_mosquito(self, sender):
@@ -137,6 +139,8 @@ class Mosquito(ui.View):
 		self._disarm_clicked = False
 		first_iter = True
 		# until disarmed send joystick data to the mosquito
+		interval = 0.005
+		last = time.time()
 		while not self._disarm_clicked:
 			aux_2 = 1.0
 			if first_iter:
@@ -148,10 +152,13 @@ class Mosquito(ui.View):
 			yaw, throttle = sender.superview['left_stick'].get_rc_values()
 			roll, pitch = sender.superview['right_stick'].get_rc_values()
 			data = msppg.serialize_SET_RC_NORMAL(throttle, roll, pitch, yaw, aux_1, aux_2)
-			try:
-				self._sock.send(data)
-			except:
-				console.alert("Connection lost!")
+			# see if min time has elapsed
+			if time.time() >= (last + interval):
+				try:
+					self._sock.send(data)
+				except:
+					console.alert("Connection lost!")
+				last = time.time()
 		data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0)
 		try:
 			self._sock.send(data)
