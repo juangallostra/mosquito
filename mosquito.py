@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 import ui
 import console
@@ -10,10 +11,11 @@ import joystick as js
 
 import msppg
 
-# Connection constants
+# Mosquito connection values
 ADDRESS = '192.168.4.1'
 PORT = 80
 TIMEOUT = 4
+
 
 def mosquito_load_view(view):
 	"""
@@ -42,14 +44,14 @@ class Mosquito(ui.View):
 		# view handling
 		self.view_dict = {'dashboard.pyui':None, 'fly_mosquito.pyui':None}
 		
-		# load and hide views
+		# load and hide all the views
 		for key in self.view_dict.keys():
 			# Load view, add it to the main view and hide it
 			self.view_dict[key] = mosquito_load_view(key)
 			self.add_subview(self.view_dict[key])
 			self.view_dict[key].hidden = True
 			
-		# bind actions
+		# bind actions to ui elements 
 		# dashboard view actions
 		self.view_dict['dashboard.pyui']['btn_fly'].action = self._switch_to_fly
 		self.view_dict['dashboard.pyui']['btn_arm'].action = self.arm_mosquito
@@ -95,13 +97,15 @@ class Mosquito(ui.View):
 	# Action methods
 	def _switch_to_fly(self, sender):
 		"""
-		Show fly view
+		Show fly view and hide the rest of views
 		"""
+		# As a safety measure, disarm the drone
+		self.disarm_mosquito(sender)
 		self.switch_view('fly_mosquito.pyui')
 
 	def _switch_to_dashboard(self, sender):
 		"""
-		Show dashboard view
+		Show dashboard view and hide the rest of views
 		"""
 		# As a safety measure, disarm Mosquito when going back
 		self._disarm_clicked = True
@@ -110,14 +114,18 @@ class Mosquito(ui.View):
 
 	def arm_mosquito(self, sender):
 		"""
-		Arm the Mosquito via Wifi
+		Arm the Mosquito via Wifi by sending appropriate RC commands.
+		For Hackflight to consider a safe arming the arming switch has to
+		be low on startup. To achieve so, two RC packets are send. In the
+		first one, the arming switch is set to low and then the second one
+		sets it to high thus arming the drone
 		"""
 		#data = msppg.serialize_SET_ARMED(1)
 		#try:
 		#	self._sock.send(data)
 		#except:
 		#	pass
-		data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+		data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0)
 		data_2 = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, 1.0)
 		try:
 			self._sock.send(data)
@@ -128,7 +136,7 @@ class Mosquito(ui.View):
 	@ui.in_background
 	def fly_arm_mosquito(self, sender):
 		"""
-		Arm the Mosquito via Wifi and loop sending RC commands
+		Arm the Mosquito via Wifi and loop ad infinitum sending RC commands
 		until disarmed
 		"""
 		#data = msppg.serialize_SET_ARMED(1)
@@ -141,12 +149,13 @@ class Mosquito(ui.View):
 		# until disarmed send joystick data to the mosquito
 		interval = 0.005
 		last = time.time()
+
 		while not self._disarm_clicked:
 			aux_2 = 1.0
 			if first_iter:
 				aux_2 = -1.0
 				first_iter = False
-			aux_1 = 0.0
+			aux_1 = -1.0
 			if sender.superview['aux_1_switch'].value:
 				aux_1 = 1.0
 			yaw, throttle = sender.superview['left_stick'].get_rc_values()
@@ -159,6 +168,7 @@ class Mosquito(ui.View):
 				except:
 					console.alert("Connection lost!")
 				last = time.time()
+
 		data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0)
 		try:
 			self._sock.send(data)
@@ -167,7 +177,8 @@ class Mosquito(ui.View):
 		
 	def disarm_mosquito(self, sender):
 		"""
-		Diasrm Mosquito via Wifi
+		Diasrm Mosquito via Wifi by sending a set of RC values that
+		disarm the drone
 		"""
 		#data = msppg.serialize_SET_ARMED(0)
 		#try:
