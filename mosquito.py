@@ -90,9 +90,28 @@ class Mosquito(ui.View):
 		try:
 			self._sock.connect((self._address, self._port))
 		except:
-			console.alert('Could not connect to the Mosquito')	
+			console.alert('Could not connect to the Mosquito')
 
-	def switch_view(self, view):
+	def _send_data(self, data):
+		"""
+		Send a serialized MSP mesage
+		"""
+		try:
+			self._sock.send(data)
+		except:
+			console.alert("Connection lost!")
+
+	def _send_multiple_data(self, multiple_data):
+		"""
+		Send multiple serialized MSP messages
+		"""
+		try:
+			for data in multiple_data:
+				self._sock.send(data)
+		except:
+			console.alert("Connection lost!")
+
+	def _switch_view(self, view):
 		"""
 		Make the requested view visible and hide all the rest
 		"""
@@ -101,7 +120,6 @@ class Mosquito(ui.View):
 			if key == view:
 				self.view_dict[key].hidden = False
 	
-
 	# Action methods
 	def _switch_to_fly(self, sender):
 		"""
@@ -109,7 +127,7 @@ class Mosquito(ui.View):
 		"""
 		# As a safety measure, disarm the drone
 		self.disarm_mosquito(sender)
-		self.switch_view('fly_mosquito.pyui')
+		self._switch_view('fly_mosquito.pyui')
 
 	def _switch_to_dashboard(self, sender):
 		"""
@@ -118,7 +136,7 @@ class Mosquito(ui.View):
 		# As a safety measure, disarm Mosquito when going back
 		self._disarm_clicked = True
 		self.disarm_mosquito(sender)
-		self.switch_view('dashboard.pyui')
+		self._switch_view('dashboard.pyui')
 
 	def arm_mosquito(self, sender):
 		"""
@@ -135,11 +153,7 @@ class Mosquito(ui.View):
 		#	pass
 		data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0)
 		data_2 = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, 1.0)
-		try:
-			self._sock.send(data)
-			self._sock.send(data_2)
-		except:
-			console.alert("Connection lost!")
+		self._send_multiple_data([data, data_2])
 
 	@ui.in_background
 	def fly_arm_mosquito(self, sender):
@@ -171,17 +185,11 @@ class Mosquito(ui.View):
 			data = msppg.serialize_SET_RC_NORMAL(throttle, roll, pitch, yaw, aux_1, aux_2)
 			# see if min time has elapsed
 			if time.time() >= (last + interval):
-				try:
-					self._sock.send(data)
-				except:
-					console.alert("Connection lost!")
+				self._send_data(data)
 				last = time.time()
 
 		data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0)
-		try:
-			self._sock.send(data)
-		except:
-			console.alert("Connection lost!")
+		self._send_data(data)
 		
 	def disarm_mosquito(self, sender):
 		"""
@@ -197,10 +205,7 @@ class Mosquito(ui.View):
 			self._disarm_clicked = True
 		else:
 			data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0)
-			try:
-				self._sock.send(data)
-			except:
-				console.alert("Connection lost!")
+			self._send_data(data)
 			
 	def send_motor_values(self, sender):
 		"""
