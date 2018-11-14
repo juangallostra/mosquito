@@ -48,10 +48,3 @@ class joystick(ui.View):
 		rc_x = (self['stick'].x + self['stick'].width / 2.0) * self.mx + self.nx
 		rc_y = (self['stick'].y + self['stick'].height / 2.0) * self.my + self.ny
 		return rc_x, rc_y
-			
-		
-#stick = joystick(20, 50)
-
-#stick.present('sheet')
-#stick.touch_ended(None)  # center the stick
-
