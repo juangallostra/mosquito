@@ -76,6 +76,7 @@ class Mosquito(ui.View):
 		# state attributes
 		self._disarm_clicked = False
 		self.view_dict['fly_mosquito.pyui']['aux_1_switch'].value = False
+		self.view_dict['dashboard.pyui']['connected_switch'].enabled = False
 		
 	def _connect(self, sender=None):
 		"""
@@ -88,6 +89,8 @@ class Mosquito(ui.View):
 		self._sock.settimeout(self._timeout)
 		try:
 			self._sock.connect((self._address, self._port))
+			if sender.superview.name == 'Mosquito Control':
+				self.view_dict['dashboard.pyui']['connected_switch'].value = True
 		except:
 			resp = console.alert(
 				'Could not connect to the Mosquito',
@@ -98,16 +101,19 @@ class Mosquito(ui.View):
 			if resp == 1:
 				self._connect()
 
-	def _send_data(self, data):
+	def _send_data(self, data, sender):
 		"""
 		Send a serialized MSP mesage
 		"""
 		try:
-			self._sock.send(data)
+			a = self._sock.send(data)
+			print a
 		except:
+			if sender.superview.name == 'Mosquito Control':
+				self.view_dict['dashboard.pyui']['connected_switch'].value = False
 			console.alert("Connection lost!")
 
-	def _send_multiple_data(self, multiple_data):
+	def _send_multiple_data(self, multiple_data, sender):
 		"""
 		Send multiple serialized MSP messages
 		"""
@@ -115,6 +121,8 @@ class Mosquito(ui.View):
 			for data in multiple_data:
 				self._sock.send(data)
 		except:
+			if sender.superview.name == 'Mosquito Control':
+				self.view_dict['dashboard.pyui']['connected_switch'].value = False
 			console.alert("Connection lost!")
 
 	def _switch_view(self, view):
@@ -159,7 +167,7 @@ class Mosquito(ui.View):
 		#	pass
 		data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0)
 		data_2 = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, 1.0)
-		self._send_multiple_data([data, data_2])
+		self._send_multiple_data([data, data_2], sender)
 
 	@ui.in_background
 	def fly_arm_mosquito(self, sender):
@@ -191,11 +199,11 @@ class Mosquito(ui.View):
 			data = msppg.serialize_SET_RC_NORMAL(throttle, roll, pitch, yaw, aux_1, aux_2)
 			# see if min time has elapsed
 			if time.time() >= (last + interval):
-				self._send_data(data)
+				self._send_data(data, sender)
 				last = time.time()
 
 		data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0)
-		self._send_data(data)
+		self._send_data(data, sender)
 		
 	def disarm_mosquito(self, sender):
 		"""
@@ -211,7 +219,7 @@ class Mosquito(ui.View):
 			self._disarm_clicked = True
 		else:
 			data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0)
-			self._send_data(data)
+			self._send_data(data, sender)
 			
 	def send_motor_values(self, sender):
 		"""
@@ -223,7 +231,7 @@ class Mosquito(ui.View):
 		m_3 = parent_view['slider_motor_3'].value
 		m_4 = parent_view['slider_motor_4'].value
 		data = msppg.serialize_SET_MOTOR_NORMAL(m_1, m_2,m_3,m_4)
-		self._send_data(data)
+		self._send_data(data, sender)
 
 def main():
 	Mosquito()
