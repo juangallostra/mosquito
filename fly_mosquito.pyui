@@ -5,7 +5,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{40, 15}, {119, 32}}",
+        "frame" : "{{65, 15}, {119, 32}}",
         "class" : "Button",
         "attributes" : {
           "border_width" : 1,
@@ -26,7 +26,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{400, 15}, {119, 32}}",
+        "frame" : "{{380, 15}, {119, 32}}",
         "class" : "Button",
         "attributes" : {
           "border_width" : 1,
@@ -47,7 +47,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{194, 15}, {175, 32}}",
+        "frame" : "{{220, 15}, {119, 32}}",
         "class" : "Button",
         "attributes" : {
           "border_width" : 1,
@@ -67,7 +67,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{40, 60}, {51, 31}}",
+        "frame" : "{{220, 60}, {51, 31}}",
         "class" : "Switch",
         "attributes" : {
           "frame" : "{{303, 266}, {51, 31}}",
@@ -82,7 +82,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{99, 60}, {60, 32}}",
+        "frame" : "{{275, 60}, {60, 32}}",
         "class" : "Label",
         "attributes" : {
           "name" : "aux_label",
@@ -100,11 +100,11 @@
     "frame" : "{{0, 0}, {657, 562}}",
     "class" : "View",
     "attributes" : {
-      "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
+      "name" : "Fly",
       "enabled" : true,
       "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
       "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
-      "name" : "Fly",
+      "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
       "flex" : ""
     },
     "selected" : false

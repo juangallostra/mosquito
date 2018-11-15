@@ -22,10 +22,10 @@ def mosquito_load_view(view):
 	"""
 	ui_view = ui.load_view(view)
 	if view == 'fly_mosquito.pyui':
-		stick_throttle_yaw = js.joystick(50, 150,'left_stick', is_throttle_stick=True)
-		stick_roll_pitch = js.joystick(50, 150, 'right_stick')
-		stick_throttle_yaw.x, stick_throttle_yaw.y = 25, 115
-		stick_roll_pitch.x, stick_roll_pitch.y = 385, 115
+		stick_throttle_yaw = js.joystick(60, 200,'left_stick', is_throttle_stick=True)
+		stick_roll_pitch = js.joystick(60, 200, 'right_stick')
+		stick_throttle_yaw.x, stick_throttle_yaw.y = 25, 60
+		stick_roll_pitch.x, stick_roll_pitch.y = 340, 60
 		#stick.present('sheet')
 		stick_throttle_yaw.touch_ended(None)  # center the stick
 		stick_roll_pitch.touch_ended(None)
