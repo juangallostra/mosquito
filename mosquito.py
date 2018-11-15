@@ -106,8 +106,7 @@ class Mosquito(ui.View):
 		Send a serialized MSP mesage
 		"""
 		try:
-			a = self._sock.send(data)
-			print a
+			self._sock.send(data)
 		except:
 			if sender.superview.name == 'Mosquito Control':
 				self.view_dict['dashboard.pyui']['connected_switch'].value = False
