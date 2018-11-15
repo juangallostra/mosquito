@@ -21,9 +21,7 @@ def mosquito_load_view(view):
 	components from a ui filename
 	"""
 	ui_view = ui.load_view(view)
-	ui_view.scr_orientation = 'portrait'
 	if view == 'fly_mosquito.pyui':
-		ui_view.scr_orientation = 'landscape'
 		stick_throttle_yaw = js.joystick(50, 150,'left_stick', is_throttle_stick=True)
 		stick_roll_pitch = js.joystick(50, 150, 'right_stick')
 		stick_throttle_yaw.x, stick_throttle_yaw.y = 25, 115
