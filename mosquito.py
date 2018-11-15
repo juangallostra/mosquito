@@ -208,7 +208,7 @@ class Mosquito(ui.View):
 			
 	def send_motor_values(self, sender):
 		"""
-		Set motor values via Wifi
+		Send slider motor values via Wifi
 		"""
 		parent_view = sender.superview
 		m_1 = parent_view['slider_motor_1'].value
@@ -216,7 +216,7 @@ class Mosquito(ui.View):
 		m_3 = parent_view['slider_motor_3'].value
 		m_4 = parent_view['slider_motor_4'].value
 		data = msppg.serialize_SET_MOTOR_NORMAL(m_1, m_2,m_3,m_4)
-		self._sock.send(data)
+		self._send_data(data)
 
 def main():
 	Mosquito()
