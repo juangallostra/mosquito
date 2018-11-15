@@ -77,7 +77,7 @@ class Mosquito(ui.View):
 		self._disarm_clicked = False
 		self.view_dict['fly_mosquito.pyui']['aux_1_switch'].value = False
 		
-	def _connect(self):
+	def _connect(self, sender=None):
 		"""
 		Try to connect to the mosquito
 		"""
