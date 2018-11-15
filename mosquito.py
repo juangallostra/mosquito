@@ -26,7 +26,6 @@ def mosquito_load_view(view):
 		stick_roll_pitch = js.joystick(60, 200, 'right_stick')
 		stick_throttle_yaw.x, stick_throttle_yaw.y = 25, 60
 		stick_roll_pitch.x, stick_roll_pitch.y = 340, 60
-		#stick.present('sheet')
 		stick_throttle_yaw.touch_ended(None)  # center the stick
 		stick_roll_pitch.touch_ended(None)
 		ui_view.add_subview(stick_throttle_yaw)
@@ -49,19 +48,7 @@ class Mosquito(ui.View):
 			self.view_dict[key].hidden = True
 			
 		# bind actions to ui elements 
-		# dashboard view actions
-		self.view_dict['dashboard.pyui']['btn_fly'].action = self._switch_to_fly
-		self.view_dict['dashboard.pyui']['btn_arm'].action = self.arm_mosquito
-		self.view_dict['dashboard.pyui']['btn_disarm'].action = self.disarm_mosquito
-		self.view_dict['dashboard.pyui']['btn_connect'].action = self._connect
-		self.view_dict['dashboard.pyui']['slider_motor_1'].action = self.send_motor_values
-		self.view_dict['dashboard.pyui']['slider_motor_2'].action = self.send_motor_values
-		self.view_dict['dashboard.pyui']['slider_motor_3'].action = self.send_motor_values
-		self.view_dict['dashboard.pyui']['slider_motor_4'].action = self.send_motor_values
-		# fly mosquito view actions
-		self.view_dict['fly_mosquito.pyui']['btn_arm'].action = self.fly_arm_mosquito
-		self.view_dict['fly_mosquito.pyui']['btn_disarm'].action = self.disarm_mosquito
-		self.view_dict['fly_mosquito.pyui']['btn_dashboard'].action = self._switch_to_dashboard
+		self._bind_actions()
 		
 		# Show the dashboard view
 		self.view_dict['dashboard.pyui'].hidden = False
@@ -89,7 +76,7 @@ class Mosquito(ui.View):
 		self._sock.settimeout(self._timeout)
 		try:
 			self._sock.connect((self._address, self._port))
-			if sender.superview.name == 'Mosquito Control':
+			if sender.superview.name == 'dashboard':
 				self.view_dict['dashboard.pyui']['connected_switch'].value = True
 		except:
 			resp = console.alert(
@@ -108,7 +95,7 @@ class Mosquito(ui.View):
 		try:
 			self._sock.send(data)
 		except:
-			if sender.superview.name == 'Mosquito Control':
+			if sender.superview.name == 'dashboard':
 				self.view_dict['dashboard.pyui']['connected_switch'].value = False
 			console.alert("Connection lost!")
 
@@ -120,7 +107,7 @@ class Mosquito(ui.View):
 			for data in multiple_data:
 				self._sock.send(data)
 		except:
-			if sender.superview.name == 'Mosquito Control':
+			if sender.superview.name == 'dashboard':
 				self.view_dict['dashboard.pyui']['connected_switch'].value = False
 			console.alert("Connection lost!")
 
@@ -196,7 +183,7 @@ class Mosquito(ui.View):
 			yaw, throttle = sender.superview['left_stick'].get_rc_values()
 			roll, pitch = sender.superview['right_stick'].get_rc_values()
 			data = msppg.serialize_SET_RC_NORMAL(throttle, roll, pitch, yaw, aux_1, aux_2)
-			# see if min time has elapsed
+			# see if min time has elapsed and, if so, send RC commands
 			if time.time() >= (last + interval):
 				self._send_data(data, sender)
 				last = time.time()
@@ -214,7 +201,7 @@ class Mosquito(ui.View):
 		#	self._sock.send(data)
 		#except:
 		#	pass
-		if sender.superview.name == 'Fly':
+		if sender.superview.name == 'transmitter':
 			self._disarm_clicked = True
 		else:
 			data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0)
@@ -231,6 +218,24 @@ class Mosquito(ui.View):
 		m_4 = parent_view['slider_motor_4'].value
 		data = msppg.serialize_SET_MOTOR_NORMAL(m_1, m_2,m_3,m_4)
 		self._send_data(data, sender)
+
+	def _bind_actions(self):
+		"""
+		Bind action methods to UI elements
+		"""
+		# dashboard view actions
+		self.view_dict['dashboard.pyui']['btn_fly'].action = self._switch_to_fly
+		self.view_dict['dashboard.pyui']['btn_arm'].action = self.arm_mosquito
+		self.view_dict['dashboard.pyui']['btn_disarm'].action = self.disarm_mosquito
+		self.view_dict['dashboard.pyui']['btn_connect'].action = self._connect
+		self.view_dict['dashboard.pyui']['slider_motor_1'].action = self.send_motor_values
+		self.view_dict['dashboard.pyui']['slider_motor_2'].action = self.send_motor_values
+		self.view_dict['dashboard.pyui']['slider_motor_3'].action = self.send_motor_values
+		self.view_dict['dashboard.pyui']['slider_motor_4'].action = self.send_motor_values
+		# fly mosquito view actions
+		self.view_dict['fly_mosquito.pyui']['btn_arm'].action = self.fly_arm_mosquito
+		self.view_dict['fly_mosquito.pyui']['btn_disarm'].action = self.disarm_mosquito
+		self.view_dict['fly_mosquito.pyui']['btn_dashboard'].action = self._switch_to_dashboard
 
 def main():
 	Mosquito()

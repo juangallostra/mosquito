@@ -308,7 +308,7 @@
       "enabled" : true,
       "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
       "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
-      "name" : "Mosquito Control"
+      "name" : "dashboard"
     },
     "selected" : false
   }
