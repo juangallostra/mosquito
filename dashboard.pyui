@@ -5,7 +5,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{34, 52}, {110, 60}}",
+        "frame" : "{{200, 6}, {78, 33}}",
         "class" : "Button",
         "attributes" : {
           "border_width" : 1,
@@ -14,7 +14,7 @@
           "tint_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
           "title" : "Arm",
           "uuid" : "B13948E5-368E-4CAF-9812-9F84964EDCB3",
-          "background_color" : "RGBA(0.784906,0.915723,0.981132,1.000000)",
+          "background_color" : "RGBA(0.981132,0.981132,0.637736,1.000000)",
           "class" : "Button",
           "corner_radius" : 10,
           "name" : "btn_arm",
@@ -26,7 +26,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{162, 52}, {110, 60}}",
+        "frame" : "{{300, 6}, {78, 33}}",
         "class" : "Button",
         "attributes" : {
           "border_width" : 1,
@@ -47,16 +47,16 @@
         "nodes" : [
 
         ],
-        "frame" : "{{0, 135}, {301, 32}}",
+        "frame" : "{{6, 47}, {620, 32}}",
         "class" : "Label",
         "attributes" : {
-          "font_size" : 18,
+          "name" : "motor_control",
           "frame" : "{{76, 182}, {150, 32}}",
           "uuid" : "4B45C741-96A4-4920-9753-DABAB84E2EB8",
           "class" : "Label",
-          "alignment" : "center",
+          "alignment" : "left",
           "text" : "Motor Control",
-          "name" : "motor_control",
+          "font_size" : 18,
           "font_name" : "AvenirNext-UltraLight"
         },
         "selected" : false
@@ -65,17 +65,17 @@
         "nodes" : [
 
         ],
-        "frame" : "{{0, 6}, {301, 32}}",
+        "frame" : "{{6, 6}, {79, 32}}",
         "class" : "Label",
         "attributes" : {
           "font_name" : "AvenirNext-UltraLight",
           "frame" : "{{76, 182}, {150, 32}}",
           "uuid" : "4B45C741-96A4-4920-9753-DABAB84E2EB8",
           "class" : "Label",
-          "alignment" : "center",
-          "text" : "Arming",
-          "font_size" : 18,
-          "name" : "arming"
+          "alignment" : "left",
+          "text" : "Control",
+          "name" : "control",
+          "font_size" : 18
         },
         "selected" : false
       },
@@ -83,7 +83,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{64, 183}, {240, 34}}",
+        "frame" : "{{64, 80}, {483, 34}}",
         "class" : "Slider",
         "attributes" : {
           "flex" : "W",
@@ -101,7 +101,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{64, 294}, {240, 34}}",
+        "frame" : "{{63, 160}, {484, 34}}",
         "class" : "Slider",
         "attributes" : {
           "flex" : "W",
@@ -119,7 +119,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{64, 356}, {240, 34}}",
+        "frame" : "{{64, 200}, {483, 34}}",
         "class" : "Slider",
         "attributes" : {
           "flex" : "W",
@@ -131,13 +131,13 @@
           "value" : 0,
           "name" : "slider_motor_4"
         },
-        "selected" : true
+        "selected" : false
       },
       {
         "nodes" : [
 
         ],
-        "frame" : "{{64, 239}, {240, 34}}",
+        "frame" : "{{64, 120}, {483, 34}}",
         "class" : "Slider",
         "attributes" : {
           "flex" : "W",
@@ -155,16 +155,16 @@
         "nodes" : [
 
         ],
-        "frame" : "{{6, 183}, {49, 34}}",
+        "frame" : "{{6, 80}, {49, 34}}",
         "class" : "Label",
         "attributes" : {
-          "name" : "m1",
+          "font_size" : 18,
           "frame" : "{{76, 182}, {150, 32}}",
           "uuid" : "08F53AE9-EDAA-4686-BBD1-CD5CDEB4621C",
           "class" : "Label",
           "alignment" : "center",
           "text" : "M1",
-          "font_size" : 18,
+          "name" : "m1",
           "font_name" : "<System>"
         },
         "selected" : false
@@ -173,7 +173,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{6, 239}, {49, 34}}",
+        "frame" : "{{6, 120}, {49, 34}}",
         "class" : "Label",
         "attributes" : {
           "font_name" : "<System>",
@@ -182,8 +182,8 @@
           "class" : "Label",
           "alignment" : "center",
           "text" : "M2",
-          "name" : "m2",
-          "font_size" : 18
+          "font_size" : 18,
+          "name" : "m2"
         },
         "selected" : false
       },
@@ -191,16 +191,16 @@
         "nodes" : [
 
         ],
-        "frame" : "{{6, 294}, {49, 34}}",
+        "frame" : "{{6, 160}, {49, 34}}",
         "class" : "Label",
         "attributes" : {
-          "font_size" : 18,
+          "name" : "m3",
           "frame" : "{{76, 182}, {150, 32}}",
           "uuid" : "08F53AE9-EDAA-4686-BBD1-CD5CDEB4621C",
           "class" : "Label",
           "alignment" : "center",
           "text" : "M3",
-          "name" : "m3",
+          "font_size" : 18,
           "font_name" : "<System>"
         },
         "selected" : false
@@ -209,7 +209,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{6, 356}, {49, 34}}",
+        "frame" : "{{6, 200}, {49, 34}}",
         "class" : "Label",
         "attributes" : {
           "font_name" : "<System>",
@@ -218,8 +218,8 @@
           "class" : "Label",
           "alignment" : "center",
           "text" : "M4",
-          "font_size" : 18,
-          "name" : "m4"
+          "name" : "m4",
+          "font_size" : 18
         },
         "selected" : false
       },
@@ -227,7 +227,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{56, 407}, {208, 68}}",
+        "frame" : "{{400, 6}, {83, 33}}",
         "class" : "Button",
         "attributes" : {
           "border_width" : 1,
@@ -236,16 +236,37 @@
           "tint_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
           "title" : "Fly",
           "uuid" : "C6E5B00B-A7C8-4A4B-822E-1FA298276120",
-          "background_color" : "RGBA(0.978774,0.783019,0.783019,1.000000)",
+          "background_color" : "RGBA(0.538326,0.831958,0.978774,1.000000)",
           "class" : "Button",
           "corner_radius" : 10,
           "name" : "btn_fly",
-          "font_size" : 30
+          "font_size" : 15
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{100, 6}, {78, 33}}",
+        "class" : "Button",
+        "attributes" : {
+          "border_width" : 1,
+          "action" : "",
+          "frame" : "{{111, 182}, {80, 32}}",
+          "tint_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
+          "title" : "Connect",
+          "uuid" : "B13948E5-368E-4CAF-9812-9F84964EDCB3",
+          "background_color" : "RGBA(0.922170,0.645519,0.645519,1.000000)",
+          "class" : "Button",
+          "corner_radius" : 10,
+          "name" : "btn_connect",
+          "font_size" : 15
         },
         "selected" : false
       }
     ],
-    "frame" : "{{0, 0}, {326, 494}}",
+    "frame" : "{{0, 0}, {657, 572}}",
     "class" : "View",
     "attributes" : {
       "flex" : "",

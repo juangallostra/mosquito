@@ -64,7 +64,7 @@ class Mosquito(ui.View):
 		
 		# Show the dashboard view
 		self.view_dict['dashboard.pyui'].hidden = False
-		self.present('fullscreen', orientations=['portrait', 'landscape'])
+		self.present('fullscreen', orientations=['landscape'])
 		
 		# store connection data and connect
 		self._address = address
