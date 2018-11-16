@@ -13,7 +13,7 @@ import msppg
 ADDRESS = '192.168.4.1'
 PORT = 80
 TIMEOUT = 4
-INTERVAL = 0.0065
+INTERVAL = 0.0065 # min interval between sent messages in seconds 
 
 
 def mosquito_load_view(view):
