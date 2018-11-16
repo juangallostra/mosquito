@@ -13,6 +13,7 @@ import msppg
 ADDRESS = '192.168.4.1'
 PORT = 80
 TIMEOUT = 4
+INTERVAL = 0.005
 
 
 def mosquito_load_view(view):
@@ -36,7 +37,7 @@ def mosquito_load_view(view):
 # Main class for the app that switches beween views
 class Mosquito(ui.View):
 
-	def __init__(self, address=ADDRESS, port=PORT, timeout=TIMEOUT):
+	def __init__(self, address=ADDRESS, port=PORT, timeout=TIMEOUT, interval=INTERVAL):
 		# view handling
 		self.view_dict = {'dashboard.pyui':None, 'fly_mosquito.pyui':None}
 		
@@ -59,6 +60,8 @@ class Mosquito(ui.View):
 		self._port = port
 		self._timeout = timeout
 		self._sock = None
+		# send data
+		self._interval = interval
 			
 		# state attributes
 		self._disarm_clicked = False
@@ -169,9 +172,7 @@ class Mosquito(ui.View):
 		self._disarm_clicked = False
 		first_iter = True
 		# until disarmed send joystick data to the mosquito
-		interval = 0.005
 		last = time.time()
-
 		while not self._disarm_clicked:
 			aux_2 = 1.0
 			if first_iter:
@@ -184,7 +185,7 @@ class Mosquito(ui.View):
 			roll, pitch = sender.superview['right_stick'].get_rc_values()
 			data = msppg.serialize_SET_RC_NORMAL(throttle, roll, pitch, yaw, aux_1, aux_2)
 			# see if min time has elapsed and, if so, send RC commands
-			if time.time() >= (last + interval):
+			if time.time() >= (last + self._interval):
 				self._send_data(data, sender)
 				last = time.time()
 
