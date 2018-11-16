@@ -149,11 +149,6 @@ class Mosquito(ui.View):
 		first one, the arming switch is set to low and then the second one
 		sets it to high thus arming the drone
 		"""
-		#data = msppg.serialize_SET_ARMED(1)
-		#try:
-		#	self._sock.send(data)
-		#except:
-		#	pass
 		data = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, -1.0)
 		data_2 = msppg.serialize_SET_RC_NORMAL(-1.0, 0.0, 0.0, 0.0, 0.0, 1.0)
 		self._send_multiple_data([data, data_2], sender)
@@ -164,11 +159,6 @@ class Mosquito(ui.View):
 		Arm the Mosquito via Wifi and loop ad infinitum sending RC commands
 		until disarmed
 		"""
-		#data = msppg.serialize_SET_ARMED(1)
-		#try:
-		#	self._sock.send(data)
-		#except:
-		#	pass	
 		self._disarm_clicked = False
 		first_iter = True
 		# until disarmed send joystick data to the mosquito
@@ -197,11 +187,6 @@ class Mosquito(ui.View):
 		Diasrm Mosquito via Wifi by sending a set of RC values that
 		disarm the drone
 		"""
-		#data = msppg.serialize_SET_ARMED(0)
-		#try:
-		#	self._sock.send(data)
-		#except:
-		#	pass
 		if sender.superview.name == 'transmitter':
 			self._disarm_clicked = True
 		else:
