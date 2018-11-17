@@ -53,14 +53,15 @@ class Mosquito(ui.View):
 		
 		# Show the dashboard view
 		self.view_dict['dashboard.pyui'].hidden = False
+		# Only support landscape view
 		self.present('fullscreen', orientations=['landscape'])
 		
-		# store connection data and connect
+		# store connection data
 		self._address = address
 		self._port = port
 		self._timeout = timeout
 		self._sock = None
-		# send data
+		# minimum time interval between data sends
 		self._interval = interval
 			
 		# state attributes
@@ -74,7 +75,6 @@ class Mosquito(ui.View):
 		"""
 		if self._sock:
 			self._sock.close()
-
 		self._sock = socket()
 		self._sock.settimeout(self._timeout)
 		try:
@@ -128,7 +128,7 @@ class Mosquito(ui.View):
 		"""
 		Show fly view and hide the rest of views
 		"""
-		# As a safety measure, disarm the drone
+		# As a safety measure, disarm Mosquito
 		self.disarm_mosquito(sender)
 		self._switch_view('fly_mosquito.pyui')
 
@@ -161,7 +161,7 @@ class Mosquito(ui.View):
 		"""
 		self._disarm_clicked = False
 		first_iter = True
-		# until disarmed send joystick data to the mosquito
+		# until disarmed send joystick data to the Mosquito
 		last = time.time()
 		while not self._disarm_clicked:
 			aux_2 = 1.0
@@ -218,7 +218,7 @@ class Mosquito(ui.View):
 		self.view_dict['dashboard.pyui']['slider_motor_2'].action = self.send_motor_values
 		self.view_dict['dashboard.pyui']['slider_motor_3'].action = self.send_motor_values
 		self.view_dict['dashboard.pyui']['slider_motor_4'].action = self.send_motor_values
-		# fly mosquito view actions
+		# fly Mosquito view actions
 		self.view_dict['fly_mosquito.pyui']['btn_arm'].action = self.fly_arm_mosquito
 		self.view_dict['fly_mosquito.pyui']['btn_disarm'].action = self.disarm_mosquito
 		self.view_dict['fly_mosquito.pyui']['btn_dashboard'].action = self._switch_to_dashboard
