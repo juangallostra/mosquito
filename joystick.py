@@ -58,6 +58,7 @@ class joystick(ui.View):
 		inside joystick area
 		"""
 		self['stick'].x = self.width/2 - self['stick'].width/2
+		# For the throttle stick maintain y position
 		if not self.is_throttle_stick:
 			self['stick'].y = self.height/2 - self['stick'].height/2
 
