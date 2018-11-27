@@ -204,6 +204,13 @@ class Mosquito(ui.View):
 		m_4 = parent_view['slider_motor_4'].value
 		data = msppg.serialize_SET_MOTOR_NORMAL(m_1, m_2,m_3,m_4)
 		self._send_data(data, sender)
+		
+	def will_close(self):
+		"""
+		This will be called when a presented view is about to be dismissed.
+		"""
+		if self._sock:
+			self._sock.close()
 
 	def _bind_actions(self):
 		"""
