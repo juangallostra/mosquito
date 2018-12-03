@@ -15,7 +15,7 @@ import msppg
 ADDRESS = '192.168.4.1'
 PORT = 80
 TIMEOUT = 4
-INTERVAL = 0.0065 # min interval between sent messages in seconds 
+INTERVAL = 0.0060 # min interval between sent messages in seconds 
 
 
 def mosquito_load_view(view):
@@ -25,10 +25,10 @@ def mosquito_load_view(view):
 	"""
 	ui_view = ui.load_view(view)
 	if view == 'fly_mosquito.pyui':
-		stick_throttle_yaw = js.joystick(60, 200,'left_stick', is_throttle_stick=True)
-		stick_roll_pitch = js.joystick(60, 200, 'right_stick')
-		stick_throttle_yaw.x, stick_throttle_yaw.y = 25, 60
-		stick_roll_pitch.x, stick_roll_pitch.y = 340, 60
+		stick_throttle_yaw = js.joystick(65, 230,'left_stick', is_throttle_stick=True)
+		stick_roll_pitch = js.joystick(65, 230, 'right_stick')
+		stick_throttle_yaw.x, stick_throttle_yaw.y = 15, 35
+		stick_roll_pitch.x, stick_roll_pitch.y = 320, 35
 		stick_throttle_yaw.touch_ended(None)  # center the stick
 		stick_roll_pitch.touch_ended(None)
 		ui_view.add_subview(stick_throttle_yaw)
