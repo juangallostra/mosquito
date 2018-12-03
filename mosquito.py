@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# Author: Juan Gallostra jgallostra@bonadrone.com
+# Date: 3-12-2018
 
 import ui
 import console
