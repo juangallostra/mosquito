@@ -14,7 +14,7 @@ import msppg
 # Mosquito connection values
 ADDRESS = '192.168.4.1'
 PORT = 80
-TIMEOUT = 4
+TIMEOUT = 2
 INTERVAL = 0.0060 # min interval between sent messages in seconds 
 
 
