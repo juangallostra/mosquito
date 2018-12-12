@@ -76,6 +76,7 @@ class Mosquito(ui.View):
 		Try to connect to the mosquito
 		"""
 		if self._sock:
+			self._sock.shutdown()
 			self._sock.close()
 		self._sock = socket()
 		self._sock.settimeout(self._timeout)
@@ -212,6 +213,7 @@ class Mosquito(ui.View):
 		This will be called when a presented view is about to be dismissed.
 		"""
 		if self._sock:
+			self._sock.shutdown()
 			self._sock.close()
 
 	def _bind_actions(self):
