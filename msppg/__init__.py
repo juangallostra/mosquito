@@ -443,6 +443,20 @@ class MSP_Parser(object):
 
                             self.POSITION_BOARD_Handler(*struct.unpack('=B', self.message_buffer))
 
+                if self.message_id == 27:
+
+                    if self.message_direction == 0:
+
+                        if hasattr(self, 'POSITION_BOARD_CONNECTED_Request_Handler'):
+
+                            self.POSITION_BOARD_CONNECTED_Request_Handler()
+
+                    else:
+
+                        if hasattr(self, 'POSITION_BOARD_CONNECTED_Handler'):
+
+                            self.POSITION_BOARD_CONNECTED_Handler(*struct.unpack('=B', self.message_buffer))
+
                 if self.message_id == 30:
 
                     if self.message_direction == 0:
@@ -706,6 +720,15 @@ class MSP_Parser(object):
             hasPositionBoard
         '''
         self.POSITION_BOARD_Handler = handler
+
+    def set_POSITION_BOARD_CONNECTED_Handler(self, handler):
+
+        '''
+        Sets the handler method for when a POSITION_BOARD_CONNECTED message is successfully parsed.
+        You should declare this message with the following parameter(s):
+            positionBoardConnected
+        '''
+        self.POSITION_BOARD_CONNECTED_Handler = handler
 
     def set_WP_MISSION_BEGIN_Handler(self, handler):
 
@@ -1329,6 +1352,28 @@ def serialize_POSITION_BOARD_Request():
     Serializes a request for POSITION_BOARD data.
     '''
     msg = '$M<' + chr(0) + chr(26) + chr(26)
+    return bytes(msg) if sys.version[0] == '2' else bytes(msg, 'utf-8')
+
+def serialize_POSITION_BOARD_CONNECTED(positionBoardConnected):
+    '''
+    Serializes the contents of a message of type POSITION_BOARD_CONNECTED.
+    '''
+    message_buffer = struct.pack('B', positionBoardConnected)
+
+    if sys.version[0] == '2':
+        msg = chr(len(message_buffer)) + chr(27) + str(message_buffer)
+        return '$M>' + msg + chr(_CRC8(msg))
+
+    else:
+        msg = [len(message_buffer), 27] + list(message_buffer)
+        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
+
+def serialize_POSITION_BOARD_CONNECTED_Request():
+
+    '''
+    Serializes a request for POSITION_BOARD_CONNECTED data.
+    '''
+    msg = '$M<' + chr(0) + chr(27) + chr(27)
     return bytes(msg) if sys.version[0] == '2' else bytes(msg, 'utf-8')
 
 def serialize_WP_MISSION_BEGIN(flag):
