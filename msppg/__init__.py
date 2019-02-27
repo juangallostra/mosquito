@@ -485,6 +485,20 @@ class MSP_Parser(object):
 
                             self.FIRMWARE_VERSION_Handler(*struct.unpack('=B', self.message_buffer))
 
+                if self.message_id == 119:
+
+                    if self.message_direction == 0:
+
+                        if hasattr(self, 'RC_CALIBRATION_STATUS_Request_Handler'):
+
+                            self.RC_CALIBRATION_STATUS_Request_Handler()
+
+                    else:
+
+                        if hasattr(self, 'RC_CALIBRATION_STATUS_Handler'):
+
+                            self.RC_CALIBRATION_STATUS_Handler(*struct.unpack('=B', self.message_buffer))
+
             else:
                 print('code: ' + str(self.message_id) + ' - crc failed')
             # Reset variables
@@ -747,6 +761,15 @@ class MSP_Parser(object):
             version
         '''
         self.FIRMWARE_VERSION_Handler = handler
+
+    def set_RC_CALIBRATION_STATUS_Handler(self, handler):
+
+        '''
+        Sets the handler method for when a RC_CALIBRATION_STATUS message is successfully parsed.
+        You should declare this message with the following parameter(s):
+            status
+        '''
+        self.RC_CALIBRATION_STATUS_Handler = handler
 
 def serialize_RAW_IMU(accx, accy, accz, gyrx, gyry, gyrz, magx, magy, magz):
     '''
@@ -1461,4 +1484,54 @@ def serialize_SET_POSITIONING_BOARD(hasBoard):
     else:
         msg = [len(message_buffer), 225] + list(message_buffer)
         return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
+
+def serialize_SET_LEDS(red, green, blue):
+    '''
+    Serializes the contents of a message of type SET_LEDS.
+    '''
+    message_buffer = struct.pack('BBB', red, green, blue)
+
+    if sys.version[0] == '2':
+        msg = chr(len(message_buffer)) + chr(227) + str(message_buffer)
+        return '$M<' + msg + chr(_CRC8(msg))
+
+    else:
+        msg = [len(message_buffer), 227] + list(message_buffer)
+        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
+
+def serialize_RC_CALIBRATION(stage):
+    '''
+    Serializes the contents of a message of type RC_CALIBRATION.
+    '''
+    message_buffer = struct.pack('B', stage)
+
+    if sys.version[0] == '2':
+        msg = chr(len(message_buffer)) + chr(214) + str(message_buffer)
+        return '$M<' + msg + chr(_CRC8(msg))
+
+    else:
+        msg = [len(message_buffer), 214] + list(message_buffer)
+        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
+
+def serialize_RC_CALIBRATION_STATUS(status):
+    '''
+    Serializes the contents of a message of type RC_CALIBRATION_STATUS.
+    '''
+    message_buffer = struct.pack('B', status)
+
+    if sys.version[0] == '2':
+        msg = chr(len(message_buffer)) + chr(119) + str(message_buffer)
+        return '$M>' + msg + chr(_CRC8(msg))
+
+    else:
+        msg = [len(message_buffer), 119] + list(message_buffer)
+        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
+
+def serialize_RC_CALIBRATION_STATUS_Request():
+
+    '''
+    Serializes a request for RC_CALIBRATION_STATUS data.
+    '''
+    msg = '$M<' + chr(0) + chr(119) + chr(119)
+    return bytes(msg) if sys.version[0] == '2' else bytes(msg, 'utf-8')
 
