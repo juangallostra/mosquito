@@ -191,20 +191,6 @@ class MSP_Parser(object):
 
                             self.GET_MOTOR_NORMAL_Handler(*struct.unpack('=ffff', self.message_buffer))
 
-                if self.message_id == 0:
-
-                    if self.message_direction == 0:
-
-                        if hasattr(self, 'CLEAR_EEPROM_Request_Handler'):
-
-                            self.CLEAR_EEPROM_Request_Handler()
-
-                    else:
-
-                        if hasattr(self, 'CLEAR_EEPROM_Handler'):
-
-                            self.CLEAR_EEPROM_Handler(*struct.unpack('=B', self.message_buffer))
-
                 if self.message_id == 1:
 
                     if self.message_direction == 0:
@@ -485,6 +471,20 @@ class MSP_Parser(object):
 
                             self.FIRMWARE_VERSION_Handler(*struct.unpack('=B', self.message_buffer))
 
+                if self.message_id == 127:
+
+                    if self.message_direction == 0:
+
+                        if hasattr(self, 'GET_PID_CONSTANTS_Request_Handler'):
+
+                            self.GET_PID_CONSTANTS_Request_Handler()
+
+                    else:
+
+                        if hasattr(self, 'GET_PID_CONSTANTS_Handler'):
+
+                            self.GET_PID_CONSTANTS_Handler(*struct.unpack('=fffffffffffffffffff', self.message_buffer))
+
                 if self.message_id == 119:
 
                     if self.message_direction == 0:
@@ -498,6 +498,34 @@ class MSP_Parser(object):
                         if hasattr(self, 'RC_CALIBRATION_STATUS_Handler'):
 
                             self.RC_CALIBRATION_STATUS_Handler(*struct.unpack('=B', self.message_buffer))
+
+                if self.message_id == 125:
+
+                    if self.message_direction == 0:
+
+                        if hasattr(self, 'GET_BATTERY_VOLTAGE_Request_Handler'):
+
+                            self.GET_BATTERY_VOLTAGE_Request_Handler()
+
+                    else:
+
+                        if hasattr(self, 'GET_BATTERY_VOLTAGE_Handler'):
+
+                            self.GET_BATTERY_VOLTAGE_Handler(*struct.unpack('=f', self.message_buffer))
+
+                if self.message_id == 116:
+
+                    if self.message_direction == 0:
+
+                        if hasattr(self, 'GET_MISSION_COMPLETE_Request_Handler'):
+
+                            self.GET_MISSION_COMPLETE_Request_Handler()
+
+                    else:
+
+                        if hasattr(self, 'GET_MISSION_COMPLETE_Handler'):
+
+                            self.GET_MISSION_COMPLETE_Handler(*struct.unpack('=B', self.message_buffer))
 
             else:
                 print('code: ' + str(self.message_id) + ' - crc failed')
@@ -572,15 +600,6 @@ class MSP_Parser(object):
             m1,m2,m3,m4
         '''
         self.GET_MOTOR_NORMAL_Handler = handler
-
-    def set_CLEAR_EEPROM_Handler(self, handler):
-
-        '''
-        Sets the handler method for when a CLEAR_EEPROM message is successfully parsed.
-        You should declare this message with the following parameter(s):
-            code
-        '''
-        self.CLEAR_EEPROM_Handler = handler
 
     def set_WP_ARM_Handler(self, handler):
 
@@ -762,6 +781,15 @@ class MSP_Parser(object):
         '''
         self.FIRMWARE_VERSION_Handler = handler
 
+    def set_GET_PID_CONSTANTS_Handler(self, handler):
+
+        '''
+        Sets the handler method for when a GET_PID_CONSTANTS message is successfully parsed.
+        You should declare this message with the following parameter(s):
+            gyroRollP,gyroRollI,gyroRollD,gyroPitchP,gyroPitchI,gyroPitchD,gyroYawP,gyroYawI,demandsToRate,levelP,altHoldP,altHoldVelP,altHoldVelI,altHoldVelD,minAltitude,param6,param7,param8,param9
+        '''
+        self.GET_PID_CONSTANTS_Handler = handler
+
     def set_RC_CALIBRATION_STATUS_Handler(self, handler):
 
         '''
@@ -770,6 +798,24 @@ class MSP_Parser(object):
             status
         '''
         self.RC_CALIBRATION_STATUS_Handler = handler
+
+    def set_GET_BATTERY_VOLTAGE_Handler(self, handler):
+
+        '''
+        Sets the handler method for when a GET_BATTERY_VOLTAGE message is successfully parsed.
+        You should declare this message with the following parameter(s):
+            voltage
+        '''
+        self.GET_BATTERY_VOLTAGE_Handler = handler
+
+    def set_GET_MISSION_COMPLETE_Handler(self, handler):
+
+        '''
+        Sets the handler method for when a GET_MISSION_COMPLETE message is successfully parsed.
+        You should declare this message with the following parameter(s):
+            status
+        '''
+        self.GET_MISSION_COMPLETE_Handler = handler
 
 def serialize_RAW_IMU(accx, accy, accz, gyrx, gyry, gyrz, magx, magy, magz):
     '''
@@ -979,28 +1025,6 @@ def serialize_GET_MOTOR_NORMAL_Request():
     Serializes a request for GET_MOTOR_NORMAL data.
     '''
     msg = '$M<' + chr(0) + chr(124) + chr(124)
-    return bytes(msg) if sys.version[0] == '2' else bytes(msg, 'utf-8')
-
-def serialize_CLEAR_EEPROM(code):
-    '''
-    Serializes the contents of a message of type CLEAR_EEPROM.
-    '''
-    message_buffer = struct.pack('B', code)
-
-    if sys.version[0] == '2':
-        msg = chr(len(message_buffer)) + chr(0) + str(message_buffer)
-        return '$M>' + msg + chr(_CRC8(msg))
-
-    else:
-        msg = [len(message_buffer), 0] + list(message_buffer)
-        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
-
-def serialize_CLEAR_EEPROM_Request():
-
-    '''
-    Serializes a request for CLEAR_EEPROM data.
-    '''
-    msg = '$M<' + chr(0) + chr(0) + chr(0)
     return bytes(msg) if sys.version[0] == '2' else bytes(msg, 'utf-8')
 
 def serialize_WP_ARM(code):
@@ -1457,11 +1481,11 @@ def serialize_SET_MOSQUITO_VERSION(version):
         msg = [len(message_buffer), 223] + list(message_buffer)
         return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
 
-def serialize_SET_PID_CONSTANTS(gyroRollPitchP, gyroRollPitchI, gyroRollPitchD, gyroYawP, gyroYawI, demandsToRate, levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude, param6, param7, param8, param9):
+def serialize_SET_PID_CONSTANTS(gyroRollP, gyroRollI, gyroRollD, gyroPitchP, gyroPitchI, gyroPitchD, gyroYawP, gyroYawI, demandsToRate, levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude, param6, param7, param8, param9):
     '''
     Serializes the contents of a message of type SET_PID_CONSTANTS.
     '''
-    message_buffer = struct.pack('ffffffffffffffff', gyroRollPitchP, gyroRollPitchI, gyroRollPitchD, gyroYawP, gyroYawI, demandsToRate, levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude, param6, param7, param8, param9)
+    message_buffer = struct.pack('fffffffffffffffffff', gyroRollP, gyroRollI, gyroRollD, gyroPitchP, gyroPitchI, gyroPitchD, gyroYawP, gyroYawI, demandsToRate, levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude, param6, param7, param8, param9)
 
     if sys.version[0] == '2':
         msg = chr(len(message_buffer)) + chr(224) + str(message_buffer)
@@ -1470,6 +1494,28 @@ def serialize_SET_PID_CONSTANTS(gyroRollPitchP, gyroRollPitchI, gyroRollPitchD, 
     else:
         msg = [len(message_buffer), 224] + list(message_buffer)
         return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
+
+def serialize_GET_PID_CONSTANTS(gyroRollP, gyroRollI, gyroRollD, gyroPitchP, gyroPitchI, gyroPitchD, gyroYawP, gyroYawI, demandsToRate, levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude, param6, param7, param8, param9):
+    '''
+    Serializes the contents of a message of type GET_PID_CONSTANTS.
+    '''
+    message_buffer = struct.pack('fffffffffffffffffff', gyroRollP, gyroRollI, gyroRollD, gyroPitchP, gyroPitchI, gyroPitchD, gyroYawP, gyroYawI, demandsToRate, levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude, param6, param7, param8, param9)
+
+    if sys.version[0] == '2':
+        msg = chr(len(message_buffer)) + chr(127) + str(message_buffer)
+        return '$M>' + msg + chr(_CRC8(msg))
+
+    else:
+        msg = [len(message_buffer), 127] + list(message_buffer)
+        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
+
+def serialize_GET_PID_CONSTANTS_Request():
+
+    '''
+    Serializes a request for GET_PID_CONSTANTS data.
+    '''
+    msg = '$M<' + chr(0) + chr(127) + chr(127)
+    return bytes(msg) if sys.version[0] == '2' else bytes(msg, 'utf-8')
 
 def serialize_SET_POSITIONING_BOARD(hasBoard):
     '''
@@ -1534,4 +1580,104 @@ def serialize_RC_CALIBRATION_STATUS_Request():
     '''
     msg = '$M<' + chr(0) + chr(119) + chr(119)
     return bytes(msg) if sys.version[0] == '2' else bytes(msg, 'utf-8')
+
+def serialize_SET_BATTERY_VOLTAGE(batteryVoltage):
+    '''
+    Serializes the contents of a message of type SET_BATTERY_VOLTAGE.
+    '''
+    message_buffer = struct.pack('f', batteryVoltage)
+
+    if sys.version[0] == '2':
+        msg = chr(len(message_buffer)) + chr(228) + str(message_buffer)
+        return '$M<' + msg + chr(_CRC8(msg))
+
+    else:
+        msg = [len(message_buffer), 228] + list(message_buffer)
+        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
+
+def serialize_SET_EMERGENCY_STOP(flag):
+    '''
+    Serializes the contents of a message of type SET_EMERGENCY_STOP.
+    '''
+    message_buffer = struct.pack('B', flag)
+
+    if sys.version[0] == '2':
+        msg = chr(len(message_buffer)) + chr(229) + str(message_buffer)
+        return '$M<' + msg + chr(_CRC8(msg))
+
+    else:
+        msg = [len(message_buffer), 229] + list(message_buffer)
+        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
+
+def serialize_GET_BATTERY_VOLTAGE(voltage):
+    '''
+    Serializes the contents of a message of type GET_BATTERY_VOLTAGE.
+    '''
+    message_buffer = struct.pack('f', voltage)
+
+    if sys.version[0] == '2':
+        msg = chr(len(message_buffer)) + chr(125) + str(message_buffer)
+        return '$M>' + msg + chr(_CRC8(msg))
+
+    else:
+        msg = [len(message_buffer), 125] + list(message_buffer)
+        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
+
+def serialize_GET_BATTERY_VOLTAGE_Request():
+
+    '''
+    Serializes a request for GET_BATTERY_VOLTAGE data.
+    '''
+    msg = '$M<' + chr(0) + chr(125) + chr(125)
+    return bytes(msg) if sys.version[0] == '2' else bytes(msg, 'utf-8')
+
+def serialize_GET_MISSION_COMPLETE(status):
+    '''
+    Serializes the contents of a message of type GET_MISSION_COMPLETE.
+    '''
+    message_buffer = struct.pack('B', status)
+
+    if sys.version[0] == '2':
+        msg = chr(len(message_buffer)) + chr(116) + str(message_buffer)
+        return '$M>' + msg + chr(_CRC8(msg))
+
+    else:
+        msg = [len(message_buffer), 116] + list(message_buffer)
+        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
+
+def serialize_GET_MISSION_COMPLETE_Request():
+
+    '''
+    Serializes a request for GET_MISSION_COMPLETE data.
+    '''
+    msg = '$M<' + chr(0) + chr(116) + chr(116)
+    return bytes(msg) if sys.version[0] == '2' else bytes(msg, 'utf-8')
+
+def serialize_SET_RANGE_PARAMETERS(rx, ry, rz):
+    '''
+    Serializes the contents of a message of type SET_RANGE_PARAMETERS.
+    '''
+    message_buffer = struct.pack('fff', rx, ry, rz)
+
+    if sys.version[0] == '2':
+        msg = chr(len(message_buffer)) + chr(221) + str(message_buffer)
+        return '$M<' + msg + chr(_CRC8(msg))
+
+    else:
+        msg = [len(message_buffer), 221] + list(message_buffer)
+        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
+
+def serialize_CLEAR_EEPROM(section):
+    '''
+    Serializes the contents of a message of type CLEAR_EEPROM.
+    '''
+    message_buffer = struct.pack('B', section)
+
+    if sys.version[0] == '2':
+        msg = chr(len(message_buffer)) + chr(201) + str(message_buffer)
+        return '$M<' + msg + chr(_CRC8(msg))
+
+    else:
+        msg = [len(message_buffer), 201] + list(message_buffer)
+        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
 
