@@ -107,6 +107,20 @@ class MSP_Parser(object):
 
                             self.RAW_IMU_Handler(*struct.unpack('=hhhhhhhhh', self.message_buffer))
 
+                if self.message_id == 103:
+
+                    if self.message_direction == 0:
+
+                        if hasattr(self, 'GET_VELOCITIES_Request_Handler'):
+
+                            self.GET_VELOCITIES_Request_Handler()
+
+                    else:
+
+                        if hasattr(self, 'GET_VELOCITIES_Handler'):
+
+                            self.GET_VELOCITIES_Handler(*struct.unpack('=fff', self.message_buffer))
+
                 if self.message_id == 121:
 
                     if self.message_direction == 0:
@@ -547,6 +561,15 @@ class MSP_Parser(object):
         '''
         self.RAW_IMU_Handler = handler
 
+    def set_GET_VELOCITIES_Handler(self, handler):
+
+        '''
+        Sets the handler method for when a GET_VELOCITIES message is successfully parsed.
+        You should declare this message with the following parameter(s):
+            velx,vely,velz
+        '''
+        self.GET_VELOCITIES_Handler = handler
+
     def set_RC_NORMAL_Handler(self, handler):
 
         '''
@@ -837,6 +860,28 @@ def serialize_RAW_IMU_Request():
     Serializes a request for RAW_IMU data.
     '''
     msg = '$M<' + chr(0) + chr(102) + chr(102)
+    return bytes(msg) if sys.version[0] == '2' else bytes(msg, 'utf-8')
+
+def serialize_GET_VELOCITIES(velx, vely, velz):
+    '''
+    Serializes the contents of a message of type GET_VELOCITIES.
+    '''
+    message_buffer = struct.pack('fff', velx, vely, velz)
+
+    if sys.version[0] == '2':
+        msg = chr(len(message_buffer)) + chr(103) + str(message_buffer)
+        return '$M>' + msg + chr(_CRC8(msg))
+
+    else:
+        msg = [len(message_buffer), 103] + list(message_buffer)
+        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
+
+def serialize_GET_VELOCITIES_Request():
+
+    '''
+    Serializes a request for GET_VELOCITIES data.
+    '''
+    msg = '$M<' + chr(0) + chr(103) + chr(103)
     return bytes(msg) if sys.version[0] == '2' else bytes(msg, 'utf-8')
 
 def serialize_RC_NORMAL(c1, c2, c3, c4, c5, c6):
